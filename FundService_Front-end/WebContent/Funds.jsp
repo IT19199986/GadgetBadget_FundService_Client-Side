@@ -2,41 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
-<%
-	//Insert item---------------------------------
-	if (request.getParameter("FundID") != null) 
-	{ 
-		Fund fundObj = new Fund(); 
-		String stsMsg = ""; 
-		
-		//Insert--------------------------
-		if (request.getParameter("hidFundIDSave") == "") 
-		 { 
-		 stsMsg = fundObj.insertFunds(request.getParameter("FundID"), 
-		 request.getParameter("ProductID"),
-		 request.getParameter("ProductName"), 
-		 request.getParameter("FName"), 
-		 request.getParameter("Amount")); 
-		 } 
-		else//Update----------------------
-		 { 
-		 stsMsg = fundObj.updateFunds(request.getParameter("hidFundIDSave"), 
-		 request.getParameter("ProductID"), 
-		 request.getParameter("ProductName"), 
-		 request.getParameter("FName"), 
-		 request.getParameter("Amount")); 
-		 } 
-		 session.setAttribute("statusMsg", stsMsg); 
-		} 
-	
-	//Delete item----------------------------------
-	if (request.getParameter("hidFundIDDelete") != null) 
-	{ 
-		Fund fundObj = new Fund(); 
-		String stsMsg = fundObj.deleteFund(request.getParameter("hidFundIDDelete")); 
-		session.setAttribute("statusMsg", stsMsg); 
-	}
-%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -52,7 +17,7 @@
 		<title>Fund Service</title>
 		
 	</head>
-	<body>
+	<body> 
 	
 		<div class="container">
 		 <div class="row">
@@ -67,17 +32,26 @@
 					 <input id ="btnSave" name="btnSave" type="button" value="Save" class="btn btn-primary">
 					 <input type="hidden" id="hidFundIDSave" name="hidFundIDSave" value="">
 				</form>
+				
+				<div id="alertSuccess" class="alert alert-success"></div>
+				<div id="alertError" class="alert alert-danger"></div>
+				
+				<br>
+				
 				<div class="alert alert-success">
 					<%
-					 out.print(session.getAttribute("statusMsg")); 
+					 	out.print(session.getAttribute("statusMsg")); 
 					%> 
 				</div>
 	
 				<br>
-				<%
-				 Fund fundsObj = new Fund(); 
-				 out.print(fundsObj.readFunds()); 
-				%>
+				<div id="divFundGrid">
+					<%
+						Fund fundsObj = new Fund(); 
+						out.print(fundsObj.readFunds()); 
+					%>
+				</div>
+				
 	 		</div>
 	 	 </div>
 		</div>

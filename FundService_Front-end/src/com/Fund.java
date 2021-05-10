@@ -28,7 +28,7 @@ public class Fund {
 		 return con; 
 	 } 
 	   
-	 public String insertFunds(String FundID, String ProductID, String ProductName, String FName, String Amount){
+	 public String insertFunds(String ProductID, String ProductName, String FName, String Amount){
 			
 			String output = ""; 
 			try 
@@ -53,12 +53,18 @@ public class Fund {
 				//execute the statement
 				 preparedStmt.execute(); 
 				 con.close(); 
-				 output = "Inserted successfully"; 
+				 
+				 String newFunds = readFunds(); 
+				 output = "{\"status\":\"success\", \"data\": \"" + 
+				 newFunds + "\"}";
+				 
+				 //output = "Inserted successfully"; 
 			
 			 }
 			catch (Exception e) 
 			 { 
-				 output = "Error while inserting"; 
+				 //output = "Error while inserting"; 
+				 output = "{\"status\":\"error\", \"data\": \"Error while inserting the fund.\"}";
 				 System.err.println(e.getMessage()); 
 			 } 
 			 return output; 
@@ -75,10 +81,12 @@ public class Fund {
 		 { 
 			 return "Error while connecting to the database for reading."; 
 		 } 
+		 
 		 // Prepare the html table to be displayed
 		 output = "<table border='1'><tr><th>Product ID</th><th>Product Name</th>"
 				 + "<th>Funder Name</th><th>Amount</th>"
 				 + "<th>Update</th><th>Remove</th></tr>"; 
+		 
 		 String query = "select * from funds"; 
 		 Statement stmt = con.createStatement(); 
 		 ResultSet rs = stmt.executeQuery(query); 
@@ -94,23 +102,26 @@ public class Fund {
 			 
 			 // Add a row into the html table
 			 output += "<tr><td><input id='hidFundIDUpdate' name='hidFundIDUpdate' type='hidden' value='" + FundID + "'>"
-					 + ProductId + "</td>"; 
+				 + ProductId + "</td>"; 
 			 output += "<td>" + ProductName + "</td>"; 
 			 output += "<td>" + FName + "</td>"; 
 			 output += "<td>" + Amount + "</td>";
 			 
 			 // buttons
 			 output += "<td><input name='btnUpdate' " 
-			 + " type='button' value='Update' class='btnUpdate btn btn-danger'></td>"
+			 + " type='button' value='Update' class='btnUpdate btn btn-danger' data-FundID='" + FundID + "'></td>"
 			 + "<td><form method='post' action='Funds.jsp'>"
 			 + "<input name='btnRemove' " 
-			 + " type='submit' value='Remove' class='btn btn-danger'>"
-			 + "<input name='hidFundIDDelete' type='hidden' " 
-			 + " value='" + FundID + "'>" + "</form></td></tr>"; 
+			 + " type='button' value='Remove' class='btn btn-danger' data-FundID='" + FundID +"'>" + "</form></td></tr>";
+			 //+ "<input name='hidFundIDDelete' type='hidden' " 
+			 //+ " value='" + FundID + "'>" + "</form></td></tr>"; 
 		 } 
+		 
 		 con.close(); 
+		 
 		 // Complete the html table
 		 output += "</table>"; 
+		 
 	 } 
 	 catch (Exception e) 
 	 { 
@@ -121,9 +132,10 @@ public class Fund {
 	}
 	
 	//Update Method
-	public String updateFunds(String FundID,String ProductID, String ProductName, String FName, String amount) 
+	public String updateFunds(String FundID, String ProductID, String ProductName, String FName, String amount) 
 	{ 
 		String output = ""; 
+		
 		try
 		{ 
 			Connection con = connect(); 
@@ -147,9 +159,10 @@ public class Fund {
 			// execute the statement
 			preparedStmt.execute(); 
 			con.close(); 
-			//String newFund = readFunds(); 
-			System.out.println("Updated Successfully");
-			//output = "{\"status\":\"success\", \"data\": \"" + newFund + "\"}"; 
+			
+			String newFund = readFunds(); 
+			//System.out.println("Updated Successfully");
+			output = "{\"status\":\"success\", \"data\": \"" + newFund + "\"}"; 
 		} 
 		catch (Exception e) 
 		{ 
