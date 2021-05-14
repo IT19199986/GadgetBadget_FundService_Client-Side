@@ -1,3 +1,4 @@
+
 $(document).ready(function()
 { 
 	if ($("#alertSuccess").text().trim() == "") 
@@ -27,7 +28,7 @@ $(document).on("click", "#btnSave", function(event)
 	 
 	// If valid------------------------
 	 var type = ($("#hidFundIDSave").val() == "") ? "POST" : "PUT";
-	 //$("#formFund").submit();
+	 $("#formFund").submit();
 	 
 	 $.ajax( 
 			 { 
@@ -53,20 +54,21 @@ $(document).on("click", ".btnUpdate", function(event)
 	$("#Amount").val($(this).closest("tr").find('td:eq(3)').text()); 
 }); 
 
+// DELETE==========================================
 $(document).on("click", ".btnRemove", function(event)
+{ 
+	$.ajax( 
+	{ 
+		url : "FundAPI", 
+		type : "DELETE", 
+		data : "FundID=" + $(this).data("FundID"),
+		dataType : "text", 
+		complete : function(response, status) 
 		{ 
-		 $.ajax( 
-		 { 
-		 url : "FundAPI", 
-		 type : "DELETE", 
-		 data : "FundID=" + $(this).data("FundID"),
-		 dataType : "text", 
-		 complete : function(response, status) 
-		 { 
-		 onFundDeleteComplete(response.responseText, status); 
-		 } 
-		 }); 
-		});
+			onFundDeleteComplete(response.responseText, status); 
+		} 
+	}); 
+});
 
 // CLIENT-MODEL================================================================
 function validateFundForm() 
@@ -98,19 +100,22 @@ function validateFundForm()
 	
 }
 
-function onItemSaveComplete(response, status)
+function onFundSaveComplete(response, status)
 { 
-	var resultSet = JSON.parse(response);
-	if (resultSet.status.trim() == "success") 
-	{ 
-		$("#alertSuccess").text("Successfully saved."); 
-		$("#alertSuccess").show(); 
-		$("#divFundGrid").html(resultSet.data); 
-	} 
-	else if (resultSet.status.trim() == "error") 
-	{ 
-		$("#alertError").text(resultSet.data); 
-		$("#alertError").show(); 
+	if(status == "success")
+	{
+		var resultSet = JSON.parse(response);
+		if (resultSet.status.trim() == "success") 
+		{ 
+			$("#alertSuccess").text("Successfully saved."); 
+			$("#alertSuccess").show(); 
+			$("#divFundGrid").html(resultSet.data); 
+		} 
+		else if (resultSet.status.trim() == "error") 
+		{ 
+			$("#alertError").text(resultSet.data); 
+			$("#alertError").show(); 
+		}
 	}
 	else if (status == "error")
 	{ 
@@ -126,7 +131,7 @@ function onItemSaveComplete(response, status)
 	$("#formFund")[0].reset(); 
 }
 
-function onItemDeleteComplete(response, status)
+function onFundDeleteComplete(response, status)
 { 
 	if (status == "success") 
 	{ 

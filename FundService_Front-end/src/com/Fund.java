@@ -1,6 +1,7 @@
 package com;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,8 +56,8 @@ public class Fund {
 				 con.close(); 
 				 
 				 String newFunds = readFunds(); 
-				 output = "{\"status\":\"success\", \"data\": \"" + 
-				 newFunds + "\"}";
+				 output = "{\"status\":\"success\", \"data\": \"" 
+				 + newFunds + "\"}";
 				 
 				 //output = "Inserted successfully"; 
 			
@@ -95,14 +96,14 @@ public class Fund {
 		 while (rs.next()) 
 		 { 
 			 String FundID = Integer.toString(rs.getInt("FundID")); 
-			 String ProductId = rs.getString("ProductId"); 
+			 String ProductID = rs.getString("ProductID"); 
 			 String ProductName = rs.getString("ProductName"); 
 			 String FName = rs.getString("FName"); 
 			 String Amount = rs.getString("Amount"); 
 			 
 			 // Add a row into the html table
 			 output += "<tr><td><input id='hidFundIDUpdate' name='hidFundIDUpdate' type='hidden' value='" + FundID + "'>"
-				 + ProductId + "</td>"; 
+				 + ProductID + "</td>"; 
 			 output += "<td>" + ProductName + "</td>"; 
 			 output += "<td>" + FName + "</td>"; 
 			 output += "<td>" + Amount + "</td>";
@@ -110,9 +111,9 @@ public class Fund {
 			 // buttons
 			 output += "<td><input name='btnUpdate' " 
 			 + " type='button' value='Update' class='btnUpdate btn btn-danger' data-FundID='" + FundID + "'></td>"
-			 + "<td><form method='post' action='Funds.jsp'>"
-			 + "<input name='btnRemove' " 
-			 + " type='button' value='Remove' class='btn btn-danger' data-FundID='" + FundID +"'>" + "</form></td></tr>";
+			 //+ "<td><form method='post' action='Funds.jsp'>"
+			 + "<td><input name='btnRemove' " 
+			 + " type='button' value='Remove' class='btnRemove btn btn-danger' data-FundID='" + FundID +"'>" + "</td></tr>";
 			 //+ "<input name='hidFundIDDelete' type='hidden' " 
 			 //+ " value='" + FundID + "'>" + "</form></td></tr>"; 
 		 } 
@@ -166,8 +167,8 @@ public class Fund {
 		} 
 		catch (Exception e) 
 		{ 
-			//output = "{\"status\":\"error\", \"data\": \"Error while updating the Funds.\"}";
-			System.out.println("Updated Error");
+			output = "{\"status\":\"error\", \"data\": \"Error while updating the Funds.\"}";
+			//System.out.println("Updated Error");
 			System.err.println(e.getMessage()); 
 		} 
 		return output; 
@@ -177,6 +178,7 @@ public class Fund {
 	public String deleteFund(String FundID)
 	{ 
 	 String output = ""; 
+	 
 	try
 	 { 
 	 Connection con = connect(); 
@@ -187,17 +189,23 @@ public class Fund {
 	 // create a prepared statement
 	 String query = "delete from funds where FundID=?"; 
 	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+	 
 	 // binding values
 	 preparedStmt.setInt(1, Integer.parseInt(FundID)); 
 	 
 	 // execute the statement
 	 preparedStmt.execute(); 
 	 con.close(); 
-	 output = "Deleted successfully"; 
+	 //output = "Deleted successfully"; 
+	 
+	 String newFund = readFunds();
+	 output = "{\"status\":\"success\", \"data\": \"" + newFund + "\"}";
+	 
 	 } 
 	catch (Exception e) 
 	 { 
-	 output = "Error while deleting the Fund."; 
+	 //output = "Error while deleting the Fund."; 
+	 output = "{\"status\":\"error\", \"data\": \"Error while deleting the Fund.\"}";
 	 System.err.println(e.getMessage()); 
 	 } 
 	return output; 

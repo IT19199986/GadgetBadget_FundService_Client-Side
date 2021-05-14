@@ -23,7 +23,7 @@ public class FundAPI extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
 	
-	Fund fundObj = new Fund();
+	Fund fundsObj = new Fund();
 	
     public FundAPI() {
         super();
@@ -44,7 +44,7 @@ public class FundAPI extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		
-		String output = fundObj.insertFunds(request.getParameter("ProductID"), 
+		String output = fundsObj.insertFunds(request.getParameter("ProductID"), 
 				request.getParameter("ProductName"), 
 				request.getParameter("FName"), 
 				request.getParameter("Amount")); 
@@ -80,7 +80,7 @@ public class FundAPI extends HttpServlet {
 			 throws ServletException, IOException 
 	{ 
 		Map paras = getParasMap(request); 
-		String output = fundObj.updateFunds(paras.get("hidFundIDSave").toString(), 
+		String output = fundsObj.updateFunds(paras.get("hidFundIDSave").toString(), 
 						paras.get("ProductID").toString(), 
 						paras.get("ProductName").toString(), 
 						paras.get("FName").toString(), 
@@ -92,7 +92,7 @@ public class FundAPI extends HttpServlet {
 			 throws ServletException, IOException 
 	{ 
 		Map paras = getParasMap(request); 
-		String output = fundObj.deleteFund(paras.get("FundID").toString()); 
+		String output = fundsObj.deleteFund(paras.get("FundID").toString()); 
 		response.getWriter().write(output); 
 	}
 

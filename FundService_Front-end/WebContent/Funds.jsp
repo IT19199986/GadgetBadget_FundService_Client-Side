@@ -11,8 +11,8 @@
 		<link rel="stylesheet" href="Views/bootstrap.min.css">
 		
 		<!-- java script file -->
-		<script src = "Components/jquery-3.6.0.min.js" type = "text/javascript"> </script>
-		<script src = "Components/FundValidation.js" type = "text/javascript"> </script>
+		<script src = "Components/jquery-3.6.0.min.js"> </script>
+		<script src = "Components/FundValidation.js"> </script>
 		
 		<title>Fund Service</title>
 		
@@ -24,13 +24,15 @@
 		 	<div class="col">
 	 			<h1>Fund Management</h1>
 	 			
-				<form method="post" action="Funds.jsp" id="formFund" name="formFund"> 
-					 Product ID: <input id = "ProductID "name="ProductID" type="text" class="form-control" onchange="emptyCheck('ProductID',ProductID)" onclick ="emptyCheck('ProductID',ProductID)"><br> 
-					 Product Name: <input id ="ProductName" name="ProductName" type="text" class="form-control" onchange="emptyCheck('ProductName',ProductName)" onclick ="emptyCheck('ProductName)',ProductName)"><br> 
-					 Funder Name: <input id ="FName" name="FName" type="text" class="form-control" onchange="emptyCheck('FName',FName)" onclick ="emptyCheck('FName',FName)"><br>
-					 Amount: <input id ="Amount" name="Amount" type="text" class="form-control" onchange="emptyCheck('Amount',Amount)" onclick ="emptyCheck('Amount',Amount)"><br>  
-					 <input id ="btnSave" name="btnSave" type="button" value="Save" class="btn btn-primary">
+				<form id="formFund" name="formFund"> 
+					<div class="col-sm-10">
+					 Product ID: <input id = "ProductID" name="ProductID" type="text" class="form-control form-control-sm"><br> 
+					 Product Name: <input id ="ProductName" name="ProductName" type="text" class="form-control form-control-sm" ><br> 
+					 Funder Name: <input id ="FName" name="FName" type="text" class="form-control form-control-sm" ><br>
+					 Amount: <input id ="Amount" name="Amount" type="text" class="form-control form-control-sm" ><br>  
+					 <input id ="btnSave" name="btnSave" type="button" value="Save" class="btn btn-outline-primary">
 					 <input type="hidden" id="hidFundIDSave" name="hidFundIDSave" value="">
+					</div>
 				</form>
 				
 				<div id="alertSuccess" class="alert alert-success"></div>
